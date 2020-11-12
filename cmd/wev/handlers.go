@@ -12,9 +12,7 @@ import (
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	// Because Pat matches the "/" path exactly, we can now remove the manual check
-	// Because Pat matches the "/" path exactly, we can now remove the manual check
-	// of r.URL.Path != "/" from this handler.
+
 	s, err := app.snippets.Latest()
 	if err != nil {
 		app.serverError(w, err)
@@ -71,7 +69,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.session.Put(r, "flash", "Snippet successfully created!")
+	app.session.Put(r, "flash", "Jutsu successfully created!")
 	http.Redirect(w, r, fmt.Sprintf("/snippet/%d", id), http.StatusSeeOther)
 }
 
@@ -122,8 +120,6 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
-	// Check whether the credentials are valid. If they're not, add a generic error
-	// message to the form failures map and re-display the login page.
 	form := forms.New(r.PostForm)
 	id, err := app.users.Authenticate(form.Get("email"), form.Get("password"))
 	if err != nil {
@@ -135,8 +131,6 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	// Add the ID of the current user to the session, so that they are now 'logged
-	// in'.
 	app.session.Put(r, "authenticatedUserID", id)
 	// Redirect the user to the create snippet page.
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
