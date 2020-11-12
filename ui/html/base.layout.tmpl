@@ -1,0 +1,45 @@
+{{define "base"}}
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>{{template "title" .}} - Naruto</title>
+<link rel='stylesheet' href='/static/css/style.css'>
+<link href="https://fonts.googleapis.com/css2?family=Xanh+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+<h1><a href='/'>Narutopedia</a></h1>
+</header>
+<nav>
+<div>
+<a href='/'>A List of Jutsu's</a>
+<!-- Toggle the navigation link -->
+{{if .IsAuthenticated}}
+<a href='/snippet/create'>Add Jutsu</a>
+{{end}}
+</div>
+<div>
+<!-- Toggle the navigation links -->
+{{if .IsAuthenticated}}
+<form action='/user/logout' method='POST'>
+<button>Logout</button>
+</form>
+{{else}}
+<a href='/user/signup'>Signup</a>
+<a href='/user/login'>Login</a>
+{{end}}
+</div>
+</nav>
+<main>
+{{with .Flash}}
+<div class='flash '>{{.}}</div>
+{{end}}
+{{template "main" .}}
+</main>
+{{template "footer" .}}
+<script src="/static/js/main.js" type="text/javascript"></script>
+</body>
+</html>
+{{end}}
+
